@@ -1,9 +1,33 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://textures/bat.png" type="Texture" id=2]
 [ext_resource path="res://textures/ball.png" type="Texture" id=3]
 [ext_resource path="res://scripts/Separator.gd" type="Script" id=4]
+[ext_resource path="res://fonts/ariblk.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://scripts/GameOverMenu.gd" type="Script" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 40
+outline_size = 2
+outline_color = Color( 0.392157, 0.392157, 0, 1 )
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 40
+outline_size = 2
+outline_color = Color( 0.392157, 0.392157, 0, 1 )
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 64
+outline_size = 7
+outline_color = Color( 0.592157, 0.584314, 0.329412, 1 )
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 26
+font_data = ExtResource( 5 )
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
@@ -29,21 +53,65 @@ script = ExtResource( 4 )
 [node name="UI" type="Node2D" parent="."]
 
 [node name="LeftScore" type="Label" parent="UI"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 240.0
-margin_bottom = 44.0
-rect_scale = Vector2( 3, 3 )
+margin_left = 262.0
+margin_top = 20.0
+margin_right = 302.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 1
 valign = 1
 
 [node name="RightScore" type="Label" parent="UI"]
-margin_left = 438.33
-margin_top = 30.0
-margin_right = 478.33
-margin_bottom = 44.0
-rect_scale = Vector2( 3, 3 )
+margin_left = 485.0
+margin_top = 20.0
+margin_right = 525.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 2 )
 text = "0"
 align = 1
 valign = 1
+
+[node name="GameOverMenu" type="Sprite" parent="."]
+pause_mode = 2
+visible = false
+position = Vector2( 250, 300 )
+script = ExtResource( 6 )
+
+[node name="Title" type="Label" parent="GameOverMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -67.0
+margin_top = -154.0
+margin_right = 96.0
+margin_bottom = -63.0
+custom_fonts/font = SubResource( 3 )
+text = "WIN!"
+
+[node name="PlayAgain" type="Button" parent="GameOverMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -62.5
+margin_top = -20.0
+margin_right = 62.5
+margin_bottom = 20.0
+custom_fonts/font = SubResource( 4 )
+text = "play agin"
+
+[node name="Return" type="Button" parent="GameOverMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -62.5
+margin_top = 59.5
+margin_right = 76.5
+margin_bottom = 103.5
+custom_fonts/font = SubResource( 4 )
+text = "return"
+[connection signal="pressed" from="GameOverMenu/PlayAgain" to="GameOverMenu" method="_on_PlayAgain_pressed"]
+[connection signal="pressed" from="GameOverMenu/Return" to="GameOverMenu" method="_on_Return_pressed"]
