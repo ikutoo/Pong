@@ -3,6 +3,7 @@ extends Node2D
 const PAD_SPEED = 700
 const INITIAL_BALL_SPEED = 500
 const MAX_SCORE = 10
+const INITIAL_SERVE_INTERVAL = 60
 
 var screenSize
 var batSize
@@ -14,6 +15,7 @@ var leftScore = 0
 var rightScore = 0
 
 var gameoverMenu
+var serveInterval = INITIAL_SERVE_INTERVAL
 
 #------------------------------------------------------------------------------------
 func _ready():
@@ -27,7 +29,11 @@ func _ready():
 
 #------------------------------------------------------------------------------------
 func _process(delta):
-	processBallMovement(delta)
+	if (serveInterval <= 0):
+		processBallMovement(delta)
+	else:
+		serveInterval -= 1
+		
 	processBatMovement(delta)
 	processScore()
 
@@ -39,6 +45,7 @@ func resetBallState():
 	else:
 		direction = Vector2(-1.0, 0.0)
 	ballSpeed = INITIAL_BALL_SPEED
+	serveInterval = INITIAL_SERVE_INTERVAL
 	
 #------------------------------------------------------------------------------------
 func processBallMovement(delta):
@@ -105,9 +112,9 @@ func moveRightBatByPlayer(delta):
 func getMoveSpeedOfAI():
 	var speed = PAD_SPEED
 	if (Global.difficultyLevel == Global.DIFFICULTY_LEVEL_EASY): speed *= 0.4
-	elif (Global.difficultyLevel == Global.DIFFICULTY_LEVEL_NORMAL): speed *= 0.55
-	elif (Global.difficultyLevel == Global.DIFFICULTY_LEVEL_HARD): speed *= 0.7
-	elif (Global.difficultyLevel == Global.DIFFICULTY_LEVEL_LEGEND): speed *= 0.85
+	elif (Global.difficultyLevel == Global.DIFFICULTY_LEVEL_NORMAL): speed *= 0.6
+	elif (Global.difficultyLevel == Global.DIFFICULTY_LEVEL_HARD): speed *= 0.8
+	elif (Global.difficultyLevel == Global.DIFFICULTY_LEVEL_LEGEND): speed *= 1.0
 	return speed
 	
 #------------------------------------------------------------------------------------
@@ -140,8 +147,8 @@ func processBatMovement(delta):
 	elif Global.gameMode == Global.GAME_MODE_TWO_PLAYER:
 		moveLeftBatByPlayer(delta)
 		moveRightBatByPlayer(delta)
-	elif Global.gameMode == Global.GAME_MODE_AUTO_PLAY:
-		moveLeftBatByAI(delta)
+	elif Global.gameMode == Global.GAME_MODE_AUTO_PLAY: # TODO: here is a bug
+		moveLeftBatByAI(delta) 
 		moveRightBatByAI(delta)
 
 #------------------------------------------------------------------------------------
