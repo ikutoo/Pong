@@ -23,6 +23,7 @@ func _process(delta):
 	processBatMovement(delta)
 	processScore()
 
+#------------------------------------------------------------------------------------
 func resetBallState():
 	get_node("Ball").position = screenSize / 2
 	direction =  Vector2(1.0, 0.0)
@@ -53,23 +54,57 @@ func processBallMovement(delta):
 	elif ballPos.x > screenSize.x:
 		leftScore += 1
 		resetBallState()
-		
+
 #------------------------------------------------------------------------------------
-func processBatMovement(delta):
+func moveLeftBatByPlayer(delta):
 	var leftPos = get_node("LeftBat").position
 	if (leftPos.y > batSize.y * 0.5 and Input.is_action_pressed("left_move_up")):
-	    leftPos.y += -PAD_SPEED * delta
+		leftPos.y += -PAD_SPEED * delta
 	if (leftPos.y < screenSize.y - batSize.y * 0.5 and Input.is_action_pressed("left_move_down")):
-	    leftPos.y += PAD_SPEED * delta
+		leftPos.y += PAD_SPEED * delta
 	get_node("LeftBat").position = leftPos
-	
+
+#------------------------------------------------------------------------------------
+func moveRightBatByPlayer(delta):
 	var rightPos = get_node("RightBat").position
 	if (rightPos.y > batSize.y * 0.5 and Input.is_action_pressed("right_move_up")):
-	    rightPos.y += -PAD_SPEED * delta
+		rightPos.y += -PAD_SPEED * delta
 	if (rightPos.y < screenSize.y - batSize.y * 0.5 and Input.is_action_pressed("right_move_down")):
 	    rightPos.y += PAD_SPEED * delta
 	get_node("RightBat").position = rightPos
+
+#------------------------------------------------------------------------------------
+func moveLeftBatByAI(delta):
+	pass
 	
+#------------------------------------------------------------------------------------
+func moveRightBatByAI(delta):
+	if (Global.aiDecisionInterval > 0): 
+		Global.aiDecisionInterval -= 1
+		return
+	else:
+		Global.aiDecisionInterval = 2
+		
+	var ballPos = get_node("Ball").position
+	var rightPos = get_node("RightBat").position
+	if (rightPos.y > batSize.y * 0.5 and ballPos.y < rightPos.y):
+		rightPos.y += -PAD_SPEED * delta
+	if (rightPos.y < screenSize.y - batSize.y * 0.5 and ballPos.y > rightPos.y):
+	    rightPos.y += PAD_SPEED * delta
+	get_node("RightBat").position = rightPos
+
+#------------------------------------------------------------------------------------
+func processBatMovement(delta):
+	if Global.gameMode == Global.GAME_MODE_ONE_PLAYER:
+		moveLeftBatByPlayer(delta)
+		moveRightBatByAI(delta)
+	elif Global.gameMode == Global.GAME_MODE_TWO_PLAYER:
+		moveLeftBatByPlayer(delta)
+		moveRightBatByPlayer(delta)
+	elif Global.gameMode == Global.GAME_MODE_AUTO_PLAY:
+		moveLeftBatByAI(delta)
+		moveRightBatByAI(delta)
+
 #------------------------------------------------------------------------------------
 func processScore():
 	get_node("UI/LeftScore").text = String(leftScore)

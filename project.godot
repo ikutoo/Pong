@@ -19,6 +19,10 @@ config/name="Pong"
 run/main_scene="res://scenes/title.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Global="*res://scripts/Global.gd"
+
 [display]
 
 window/size/width=800
