@@ -3,7 +3,7 @@ extends Node2D
 const PAD_SPEED = 700
 const INITIAL_BALL_SPEED = 500
 const MAX_SCORE = 10
-const INITIAL_SERVE_INTERVAL = 60
+const INITIAL_SERVE_INTERVAL = 1.0
 
 var screenSize
 var batSize
@@ -32,7 +32,7 @@ func _process(delta):
 	if (serveInterval <= 0):
 		processBallMovement(delta)
 	else:
-		serveInterval -= 1
+		serveInterval -= delta
 		
 	processBatMovement(delta)
 	processScore()
@@ -58,7 +58,7 @@ func processBallMovement(delta):
 
 	# 球碰到上下边界反弹
 	ballPos += direction * ballSpeed * delta
-	if ((ballPos.y < 0 and direction.y < 0) or (ballPos.y > screenSize.y and direction.y > 0)):
+	if ((ballPos.y < Global.BORDER_MARGIN.y and direction.y < 0) or (ballPos.y > screenSize.y - Global.BORDER_MARGIN.y and direction.y > 0)):
 		direction.y = -direction.y
 	
 	# 球碰到球拍的反弹处理
@@ -79,14 +79,16 @@ func processBallMovement(delta):
 		direction.y = offset
 		direction = direction.normalized()
 		if (ballSpeed < 2.0*INITIAL_BALL_SPEED): ballSpeed *= 1.05
+		
+		get_node("Sounds/Hit").play()
 	
 	get_node("Ball").position = ballPos
 		
 	# 球越出左右边界，计算得分
-	if ballPos.x < 0:
+	if ballPos.x < Global.BORDER_MARGIN.x:
 		rightScore += 1
 		resetBallState()
-	elif ballPos.x > screenSize.x:
+	elif ballPos.x > screenSize.x - Global.BORDER_MARGIN.x:
 		leftScore += 1
 		resetBallState()
 

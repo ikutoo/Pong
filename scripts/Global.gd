@@ -9,5 +9,7 @@ const DIFFICULTY_LEVEL_NORMAL = 1
 const DIFFICULTY_LEVEL_HARD = 2
 const DIFFICULTY_LEVEL_LEGEND = 3
 
+const BORDER_MARGIN = Vector2(30, 50)
+
 var gameMode = -1
 var difficultyLevel =  -1

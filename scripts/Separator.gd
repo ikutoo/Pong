@@ -1,9 +1,11 @@
 extends Sprite
 
-var screenSize
+var viewportSize
 
 func _ready():
-	screenSize = get_viewport_rect().size
+	viewportSize = get_viewport_rect().size
 
 func _draw():
-	draw_line(Vector2(screenSize.x/2, 0), Vector2(screenSize.x/2, screenSize.y), Color.white, 1.0, true);
+	var y_top = Global.BORDER_MARGIN.y
+	var y_bottom = viewportSize.y - y_top
+	draw_line(Vector2(viewportSize.x/2, y_top), Vector2(viewportSize.x/2, y_bottom), Color.white, 1.0, true);

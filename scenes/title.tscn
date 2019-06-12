@@ -88,5 +88,5 @@ text = "demo"
 [connection signal="pressed" from="1player" to="." method="_on_1player_pressed"]
 [connection signal="pressed" from="2player" to="." method="_on_2player_pressed"]
 [connection signal="pressed" from="exit" to="." method="_on_exit_pressed"]
-[connection signal="pressed" from="demo" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="demo" to="." method="_on_demo_pressed"]
+[connection signal="pressed" from="demo" to="." method="_on_exit_pressed"]
